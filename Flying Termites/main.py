@@ -7,7 +7,9 @@ class Simulation:
 	BLACK = (0, 0, 0)
 	WHITE = (255, 255, 255)
 	YELLOW = (255, 255, 0)
-
+	GREY1 = (192,192,192)
+	GREY2 = (128,128,128)
+	GREY3 = (64,64,64)
 	def __init__(self):
 		self._running = True
 		self._display_surf = None
@@ -29,7 +31,7 @@ class Simulation:
 				self._running = False
 
 		if event.type == pygame.MOUSEBUTTONUP:
-			Swarm.global_best_position = pygame.mouse.get_pos()
+			Swarm.light = pygame.mouse.get_pos()
 
 	def on_loop(self):
 		for swrm in self.swarm:
@@ -58,9 +60,12 @@ class Simulation:
 			swrm.move()
 
 	def on_render(self):
-		pygame.draw.circle(self._display_surf, Simulation.YELLOW,(int(Swarm.global_best_position[0]),int(Swarm.global_best_position[1])),20,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY3,(int(Swarm.light[0]),int(Swarm.light[1])),250,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY2,(int(Swarm.light[0]),int(Swarm.light[1])),125,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY1,(int(Swarm.light[0]),int(Swarm.light[1])),75,0)
+		pygame.draw.circle(self._display_surf, Simulation.WHITE,(int(Swarm.light[0]),int(Swarm.light[1])),20,0)
 		for swrm in self.swarm:
-			pygame.draw.circle(self._display_surf, Simulation.BLACK, (int(swrm.x),int(swrm.y)), 5, 0)
+			pygame.draw.circle(self._display_surf, Simulation.YELLOW, (int(swrm.x),int(swrm.y)), 5, 0)
 		pygame.display.update()
 
 	def on_cleanup(self):
@@ -76,7 +81,7 @@ class Simulation:
 			self.on_loop()
 			self.on_render()
 			self.clock.tick(50)
-			self._display_surf.fill(Simulation.WHITE)
+			self._display_surf.fill(Simulation.BLACK)
 		self.on_cleanup()
 
 if __name__ == '__main__':

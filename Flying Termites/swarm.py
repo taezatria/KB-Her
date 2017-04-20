@@ -3,7 +3,7 @@ import numpy as np
 import math
 
 class Swarm:
-	global_best_position = [250,250]
+	light = [250,250]
 	max_velocity = 10
 	def __init__(self):
 		self.x = randint(0,499)
@@ -17,27 +17,30 @@ class Swarm:
 
 #		if(Swarm.global_best > self.personal_best_value):
 #			Swarm.global_best = self.personal_best_value
-#			Swarm.global_best_position = self.position
 
 	def move(self):
-		x = Swarm.global_best_position[0]
-		y = Swarm.global_best_position[1]
+		x = Swarm.light[0]
+		y = Swarm.light[1]
 		
 		if abs(self.velocityX) > Swarm.max_velocity or abs(self.velocityY) > Swarm.max_velocity:
 			scaleFactor = Swarm.max_velocity / max(abs(self.velocityX), abs(self.velocityY))
 			self.velocityX *= scaleFactor
 			self.velocityY *= scaleFactor
 
-		if (self.x >= x-150 and self.x <= x+150 and self.y >= y-150 and self.y <= y+150 and self.close == False):
+		if (self.x >= x-125 and self.x <= x+125 and self.y >= y-125 and self.y <= y+125 and self.close == False):
+			self.c1 = 0.001
+			self.c2 = 0.005
 			self.velocityX *= 0.75
 			self.velocityY *= 0.75
 			self.close = True
 		else:
 			self.close = False
+			self.c1 = 0
+			self.c2 = 0.00001
 
-		self.distract = [randint(x-150,x+150),randint(y-150,y+150)]
-		self.velocityX += 0.5 * self.c1 * random() * (Swarm.global_best_position[0] - self.x) + self.c2 * random() * (self.distract[0] - self.x)
-		self.velocityY += 0.5 * self.c1 * random() * (Swarm.global_best_position[1] - self.x) + self.c2 * random() * (self.distract[1] - self.y)
+		self.distract = [randint(x-125,x+125),randint(y-125,y+125)]
+		self.velocityX += 0.5 * self.c1 * random() * (Swarm.light[0] - self.x) + self.c2 * random() * (self.distract[0] - self.x)
+		self.velocityY += 0.5 * self.c1 * random() * (Swarm.light[1] - self.x) + self.c2 * random() * (self.distract[1] - self.y)
 		self.x += self.velocityX
 		self.y += self.velocityY
 
@@ -86,7 +89,7 @@ class Swarm:
 	def moveAway(self, swarms, minDistance):
 		if len(swarms) < 1: 
 			return
-		
+
 		distanceX = 0
 		distanceY = 0
 		numClose = 0
