@@ -13,13 +13,15 @@ class Simulation:
 	def __init__(self):
 		self._running = True
 		self._display_surf = None
-		self.size = self.width, self.height = 500,500
+		self.size = self.width, self.height = 600,600
 		self.clock = pygame.time.Clock()
 
 	def on_init(self):
 		self.swarm = [Swarm() for i in range(20)]
+		self.light = Swarm()
 		pygame.init()
 		self._display_surf = pygame.display.set_mode(self.size, pygame.HWSURFACE | pygame.DOUBLEBUF)
+		pygame.display.set_caption("Flying Termites")
 		self._display_surf.fill(Simulation.WHITE)
 		self._running = True
 
@@ -31,7 +33,12 @@ class Simulation:
 				self._running = False
 
 		if event.type == pygame.MOUSEBUTTONUP:
-			Swarm.light = pygame.mouse.get_pos()
+			temp = pygame.mouse.get_pos()
+			if event.button == 1:
+				self.light.set_pos(temp[0],temp[1])
+			elif event.button == 3:
+				self.swarm.append(Swarm())
+				self.swarm[-1].set_pos(temp[0],temp[1])
 
 	def on_loop(self):
 		for swrm in self.swarm:
@@ -40,14 +47,14 @@ class Simulation:
 				if otherSwrm == swrm:
 					continue
 				distance = swrm.distance(otherSwrm)
-				if distance < 150:
+				if distance < 250:
 					closeSwrm.append(otherSwrm)
 
 			swrm.moveCloser(closeSwrm)
 			swrm.moveWith(closeSwrm)
 			swrm.moveAway(closeSwrm, 15)
 
-			border = 25
+			border = 10
 			if swrm.x < border and swrm.velocityX < 0:
 				swrm.velocityX = -swrm.velocityX * random()
 			if swrm.x > self.width - border and swrm.velocityX > 0:
@@ -57,13 +64,13 @@ class Simulation:
 			if swrm.y > self.height - border and swrm.velocityY > 0:
 				swrm.velocityY = -swrm.velocityY * random()
 
-			swrm.move()
+			swrm.move(self.light)
 
 	def on_render(self):
-		pygame.draw.circle(self._display_surf, Simulation.GREY3,(int(Swarm.light[0]),int(Swarm.light[1])),250,0)
-		pygame.draw.circle(self._display_surf, Simulation.GREY2,(int(Swarm.light[0]),int(Swarm.light[1])),125,0)
-		pygame.draw.circle(self._display_surf, Simulation.GREY1,(int(Swarm.light[0]),int(Swarm.light[1])),75,0)
-		pygame.draw.circle(self._display_surf, Simulation.WHITE,(int(Swarm.light[0]),int(Swarm.light[1])),20,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY3,(int(self.light.x),int(self.light.y)),250,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY2,(int(self.light.x),int(self.light.y)),150,0)
+		pygame.draw.circle(self._display_surf, Simulation.GREY1,(int(self.light.x),int(self.light.y)),75,0)
+		pygame.draw.circle(self._display_surf, Simulation.WHITE,(int(self.light.x),int(self.light.y)),25,0)
 		for swrm in self.swarm:
 			pygame.draw.circle(self._display_surf, Simulation.YELLOW, (int(swrm.x),int(swrm.y)), 5, 0)
 		pygame.display.update()
