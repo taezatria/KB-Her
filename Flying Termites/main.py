@@ -47,7 +47,7 @@ class Simulation:
 				if otherSwrm == swrm:
 					continue
 				distance = swrm.distance(otherSwrm)
-				if distance < 250:
+				if distance < 125:
 					closeSwrm.append(otherSwrm)
 
 			swrm.moveCloser(closeSwrm)
