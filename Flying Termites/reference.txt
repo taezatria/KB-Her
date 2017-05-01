@@ -1,0 +1,13 @@
+#pygame & struture
+http://pygametutorials.wikidot.com/tutorials-basic
+http://inventwithpython.com/chapter17.html
+http://inventwithpython.com/chapter18.html
+
+#moves and rules
+http://www.kfish.org/boids/pseudocode.html
+http://www.kfish.org/boids/index.html
+http://www.coderholic.com/boids/
+http://www.red3d.com/cwr/boids/
+
+#PSO
+http://www.swarmintelligence.org/tutorials.php
