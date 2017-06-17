@@ -12,7 +12,7 @@ import time
 N = 9
 W = N + 2
 empty = "\n".join([(N+1)*' '] + N*[' '+N*'.'] + [(N+2)*' '])
-colstr = 'ABCDEFGHJKLMNOPQRST'
+colstr = 'ABCDEFGHIJKLMNOPQRST'
 strrand = 'ABCDEFGHI'
 MAX_GAME_LEN = N * N * 3
 
@@ -33,10 +33,10 @@ PROB_SSAREJECT = 0.9
 PROB_RSAREJECT = 0.5
 RESIGN_THRES = 0.2
 
-FASTPLAY4_THRES = 0.6
-FASTPLAY3_THRES = 0.7
-FASTPLAY2_THRES = 0.8
-FASTPLAY1_THRES = 0.9
+FASTPLAY4_THRES = 0.5
+FASTPLAY3_THRES = 0.6
+FASTPLAY2_THRES = 0.7
+FASTPLAY1_THRES = 0.8
 #FASTPLAY5_THRES = 0.35
 #FASTPLAY4_THRES = 0.45
 #FASTPLAY3_THRES = 0.55
@@ -713,8 +713,8 @@ def tree_search(tree, n, owner_map, disp=False):
 #        if i > n*0.025 and best_wr > FASTPLAY1_THRES or i > n*0.05 and best_wr > FASTPLAY2_THRES or i > n*0.075 and best_wr > FASTPLAY3_THRES \
 #        	or i > n*0.1 and best_wr > FASTPLAY4_THRES or i > n*0.125 and best_wr > FASTPLAY5_THRES:
 #            break
-        if i > n*0.1 and best_wr > FASTPLAY1_THRES or i > n*0.2 and best_wr > FASTPLAY2_THRES or i > n*0.35 and best_wr > FASTPLAY3_THRES \
-        	or i > n*0.5 and best_wr > FASTPLAY4_THRES :
+        if i > n*0.1 and best_wr > FASTPLAY1_THRES or i > n*0.2 and best_wr > FASTPLAY2_THRES or i > n*0.3 and best_wr > FASTPLAY3_THRES \
+        	or i > n*0.4 and best_wr > FASTPLAY4_THRES :
             break
 
     for c in range(W*W):
@@ -799,7 +799,7 @@ def str_coord(c):
     return '%c%d' % (colstr[col], N - row)
 
 HIST = []
-def goblock(arg):
+def gokill(arg):
     try:
         with open(spat_patterndict_file) as f:
             #			print('Loading pattern spatial dictionary...', file=sys.stderr)
@@ -838,14 +838,14 @@ if __name__ == '__main__':
     if(len(sys.argv) >= 2):
         board = sys.argv[1]
         try:
-            goblock(board)
+            gokill(board)
         except IndexError :
             out = ngasal()
             print('%s' % out)
     else:
         board = empty_position().board
         t_start = time.time()
-        goblock(board)
+        gokill(board)
         print('Tree search with %d playouts took %.3fs with %d threads; speed is %.3f playouts/thread/s' %
               (N_SIMS, time.time() - t_start, multiprocessing.cpu_count(),
                N_SIMS / ((time.time() - t_start) * multiprocessing.cpu_count())))

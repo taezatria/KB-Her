@@ -12,7 +12,7 @@ import time
 N = 9
 W = N + 2
 empty = "\n".join([(N+1)*' '] + N*[' '+N*'.'] + [(N+2)*' '])
-colstr = 'ABCDEFGHJKLMNOPQRST'
+colstr = 'ABCDEFGHIJKLMNOPQRST'
 strrand = 'ABCDEFGHI'
 MAX_GAME_LEN = N * N * 3
 
