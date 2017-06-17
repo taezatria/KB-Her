@@ -1,3 +1,3 @@
 # Project GO Bots "GO-Kill"
 
-patterns : http://pachi.or.cz/michi-pat/
+Main program : go-block.py
